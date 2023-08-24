@@ -7,9 +7,20 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class LoanCalculationObject implements Arrayable, IHashable
 {
-    public function __construct(protected float $monthlyInterestRate, protected int $totalNumberOfMonths, protected float $monthlyPayment, protected float $monthlyPrincipalAmount, protected float $monthlyInterestAmount)
+    public function __construct(
+        protected float  $totalAmount,
+        protected float  $monthlyInterestRate,
+        protected int    $totalNumberOfMonths,
+        protected float  $monthlyPayment,
+        protected ?float $monthlyFixedExtraPayment
+    )
     {
 
+    }
+
+    public function getTotalAmount(): float
+    {
+        return $this->totalAmount;
     }
 
     public function getMonthlyInterestRate(): float
@@ -27,24 +38,19 @@ class LoanCalculationObject implements Arrayable, IHashable
         return $this->monthlyPayment;
     }
 
-    public function getMonthlyPrincipalAmount(): float
+    public function getMonthlyFixedExtraPayment(): ?float
     {
-        return $this->monthlyPrincipalAmount;
-    }
-
-    public function getMonthlyInterestAmount(): float
-    {
-        return $this->monthlyInterestAmount;
+        return $this->monthlyFixedExtraPayment;
     }
 
     public function toArray(): array
     {
         return [
+            'totalAmount' => $this->totalAmount,
             'monthlyInterestRate' => $this->monthlyInterestRate,
             'totalNumberOfMonths' => $this->totalNumberOfMonths,
             'monthlyPayment' => $this->monthlyPayment,
-            'monthlyPrincipalAmount' => $this->monthlyPrincipalAmount,
-            'monthlyInterestAmount' => $this->monthlyInterestAmount,
+            'monthlyFixedExtraPayment' => $this->monthlyFixedExtraPayment,
         ];
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('monthly_payment');
             $table->float('monthly_principal_amount');
             $table->float('monthly_interest_amount');
+            $table->float('monthly_fixed_extra_payment')->nullable();
             $table->float('ending_balance');
 
             $table->foreign('loan_id')->references('id')->on('loans')->onDelete('cascade');

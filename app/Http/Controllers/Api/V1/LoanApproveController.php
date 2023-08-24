@@ -30,6 +30,8 @@ class LoanApproveController extends Controller
                 $loanAmortizationScheduleRepository->create($loan, $loanCachedData->getLoanAmortizationSchedule());
             });
 
+            Cache::forget($token);
+
             return ResponseService::successMessage('Loan Stored');
         } catch (UniqueConstraintViolationException $e) {
             return ResponseService::errorMessage('Loan with provided token already stored in DB', 400);

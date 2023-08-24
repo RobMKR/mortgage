@@ -5,20 +5,15 @@ namespace App\Services\Loan;
 class LoanMonthlyPaymentDto implements \JsonSerializable
 {
     public function __construct(
-        protected string $paymentDate,
-        protected int    $monthNumber,
-        protected float  $startingBalance,
-        protected float  $monthlyPayment,
-        protected float  $monthlyPrincipalAmount,
-        protected float  $monthlyInterestAmount,
-        protected float  $endingBalance,
+        protected int   $monthNumber,
+        protected float $startingBalance,
+        protected float $monthlyPayment,
+        protected float $monthlyPrincipalAmount,
+        protected float $monthlyInterestAmount,
+        protected float $endingBalance,
+        protected ?float $monthlyFixedExtraPayment = null,
     )
     {
-    }
-
-    public function getPaymentDate(): string
-    {
-        return $this->paymentDate;
     }
 
     public function getMonthNumber(): int
@@ -46,6 +41,11 @@ class LoanMonthlyPaymentDto implements \JsonSerializable
         return $this->monthlyInterestAmount;
     }
 
+    public function getMonthlyFixedExtraPayment(): ?float
+    {
+        return $this->monthlyFixedExtraPayment;
+    }
+
     public function getEndingBalance(): float
     {
         return $this->endingBalance;
@@ -54,12 +54,12 @@ class LoanMonthlyPaymentDto implements \JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'paymentDate' => $this->getPaymentDate(),
             'monthNumber' => $this->getMonthNumber(),
             'startingBalance' => $this->getStartingBalance(),
             'monthlyPayment' => $this->getMonthlyPayment(),
             'monthlyPrincipalAmount' => $this->getMonthlyPrincipalAmount(),
             'monthlyInterestAmount' => $this->getMonthlyInterestAmount(),
+            'monthlyFixedExtraPayment' => $this->getMonthlyFixedExtraPayment(),
             'endingBalance' => $this->getEndingBalance(),
         ];
     }

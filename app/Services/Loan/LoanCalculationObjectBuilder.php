@@ -20,9 +20,7 @@ class LoanCalculationObjectBuilder
 
         // Monthly payment = (Loan amount * Monthly interest rate) / (1 - (1 + Monthly interest rate)^(-Number of months))
         $monthlyPayment = ($this->loanDto->getAmount() * $monthlyInterestRate) / (1 - pow(1 + $monthlyInterestRate, -$totalNumberOfMonths));
-        $monthlyPrincipalAmount = $this->loanDto->getAmount() / $totalNumberOfMonths;
-        $monthlyInterestAmount = $monthlyPayment - $monthlyPrincipalAmount;
 
-        return new LoanCalculationObject($monthlyInterestRate, $totalNumberOfMonths, $monthlyPayment, $monthlyPrincipalAmount, $monthlyInterestAmount);
+        return new LoanCalculationObject($this->loanDto->getAmount(), $monthlyInterestRate, $totalNumberOfMonths, $monthlyPayment, $this->loanDto->getMonthlyFixedExtraPayment());
     }
 }

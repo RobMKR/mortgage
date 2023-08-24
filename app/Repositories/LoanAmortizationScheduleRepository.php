@@ -24,6 +24,7 @@ class LoanAmortizationScheduleRepository
                 'monthly_payment' => $object->getMonthlyPayment(),
                 'monthly_principal_amount' => $object->getMonthlyPrincipalAmount(),
                 'monthly_interest_amount' => $object->getMonthlyInterestAmount(),
+                'monthly_fixed_extra_payment' => $object->getMonthlyFixedExtraPayment(),
                 'ending_balance' => $object->getEndingBalance(),
             ];
         }
