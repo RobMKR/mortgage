@@ -31,23 +31,44 @@ class LoanAmortizationScheduleObjectBuilder
 
         $periods = $this->loanCalculationObject->getTotalNumberOfMonths();
 
-        for ($i = 0; $i < $periods; $i++) {
-            $period = $i + 1;
-
-            $startingBalance = $balance;
-            $balance = $balance - $this->loanCalculationObject->getMonthlyPayment();
+        for ($period = 1; $period <= $periods; $period++) {
+            $lastPayment = false;
 
             $monthlyInterestAmount = -1 * $this->ipmt($this->loanCalculationObject->getMonthlyInterestRate(), $period, $periods, $this->loanCalculationObject->getTotalAmount());
             $monthlyPrincipalAmount = -1 * $this->ppmt($this->loanCalculationObject->getMonthlyInterestRate(), $period, $periods, $this->loanCalculationObject->getTotalAmount());
+            $monthlyPayment = $this->loanCalculationObject->getMonthlyPayment();
+            $fixedPayment = $this->loanCalculationObject->getMonthlyFixedExtraPayment();
+
+            $startingBalance = $balance;
+            $balance -= $this->loanCalculationObject->getMonthlyPayment();
+            if ($this->loanCalculationObject->getMonthlyFixedExtraPayment() !== null) {
+                $balance -= $this->loanCalculationObject->getMonthlyFixedExtraPayment();
+            }
+
+            if ($balance < 0) {
+                // Case with extra payments
+                // Monthly = remaining balance
+                $monthlyPayment = $startingBalance;
+                $monthlyPrincipalAmount = $monthlyPayment - $monthlyInterestAmount;
+                $fixedPayment = 0;
+                $balance = 0;
+
+                $lastPayment = true;
+            }
 
             $paymentsByMonth[] = new LoanMonthlyPaymentDto(
                 $period,
                 $startingBalance,
-                $this->loanCalculationObject->getMonthlyPayment(),
+                $monthlyPayment,
                 $monthlyPrincipalAmount,
                 $monthlyInterestAmount,
-                $balance
+                $balance,
+                $fixedPayment
             );
+
+            if ($lastPayment) {
+                break;
+            }
         }
 
         return new LoanAmortizationScheduleObject($paymentsByMonth);
@@ -56,7 +77,7 @@ class LoanAmortizationScheduleObjectBuilder
     public function ppmt(float $rate, int $period, int $periods, float $present_value, float $future_value = 0.0, bool $beginning = false): float
     {
         $payment = $this->pmt($rate, $periods, $present_value, $future_value, $beginning);
-        $ipmt    = $this->ipmt($rate, $period, $periods, $present_value, $future_value, $beginning);
+        $ipmt = $this->ipmt($rate, $period, $periods, $present_value, $future_value, $beginning);
 
         return $payment - $ipmt;
     }
@@ -90,10 +111,10 @@ class LoanAmortizationScheduleObjectBuilder
         $when = $beginning ? 1 : 0;
 
         if ($rate == 0) {
-            return - ($future_value + $present_value) / $periods;
+            return -($future_value + $present_value) / $periods;
         }
 
-        return - ($future_value + ($present_value * \pow(1 + $rate, $periods)))
+        return -($future_value + ($present_value * \pow(1 + $rate, $periods)))
             /
             ((1 + $rate * $when) / $rate * (\pow(1 + $rate, $periods) - 1));
     }
@@ -112,9 +133,9 @@ class LoanAmortizationScheduleObjectBuilder
             return $this->checkZero($fv);
         }
 
-        $initial  = 1 + ($rate * $when);
+        $initial = 1 + ($rate * $when);
         $compound = \pow(1 + $rate, $periods);
-        $fv       = - (($present_value * $compound) + (($payment * $initial * ($compound - 1)) / $rate));
+        $fv = -(($present_value * $compound) + (($payment * $initial * ($compound - 1)) / $rate));
 
         return $this->checkZero($fv);
     }
