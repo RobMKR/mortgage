@@ -8,10 +8,17 @@ class Loan extends Model
 {
     protected $fillable = [
         'loan_token',
-        'loan_input',
+        'amount',
+        'period',
+        'interest_rate',
+        'extra_payment_per_month',
     ];
 
     public function loanAmortizationScheduleRows() {
         return $this->hasMany(LoanAmortizationSchedule::class);
+    }
+
+    public function loanAmortizationExtraRepaymentScheduleRows() {
+        return $this->hasMany(LoanAmortizationExtraRepaymentSchedule::class);
     }
 }

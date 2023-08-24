@@ -15,7 +15,10 @@ class LoanRepository
     public function create(string $loanToken, LoanDto $loanDto) {
         return Loan::create([
             'loan_token' => $loanToken,
-            'loan_input' => json_encode($loanDto->toArray()),
+            'amount' => $loanDto->getAmount(),
+            'period' => $loanDto->getDuration(),
+            'interest_rate' => $loanDto->getInterestRate(),
+            'extra_payment_per_month' => $loanDto->getMonthlyFixedExtraPayment(),
         ]);
     }
 

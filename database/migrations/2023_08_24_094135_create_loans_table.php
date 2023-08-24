@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->string('loan_token', 32)->unique();
-            $table->json('loan_input')->nullable();
+            $table->float('amount');
+            $table->smallInteger('period');
+            $table->float('interest_rate');
+            $table->float('extra_payment_per_month')->nullable();
             $table->timestamps();
         });
     }

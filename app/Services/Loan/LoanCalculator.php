@@ -44,6 +44,15 @@ class LoanCalculator
         return $this->checkZero($interest);
     }
 
+    public function aer(float $nominal, int $periods): float
+    {
+        if ($periods == 1) {
+            return $nominal;
+        }
+
+        return \pow(1 + ($nominal / $periods), $periods) - 1;
+    }
+
     private function pmt(float $rate, int $periods, float $present_value, float $future_value = 0.0, bool $beginning = false): float
     {
         $when = $beginning ? 1 : 0;
