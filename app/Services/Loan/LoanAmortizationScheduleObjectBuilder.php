@@ -4,6 +4,12 @@ namespace App\Services\Loan;
 
 use Carbon\Carbon;
 
+/**
+ * helper functions copied from math-php open source project~!
+ * Could be also replaced with full package of math-php
+ *
+ * @see https://github.com/markrogoyski/math-php/blob/master/src/Finance.php
+ */
 class LoanAmortizationScheduleObjectBuilder
 {
     public const EPSILON = 1e-6;
