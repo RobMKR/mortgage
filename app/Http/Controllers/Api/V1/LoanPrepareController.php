@@ -29,17 +29,16 @@ class LoanPrepareController extends Controller
         );
 
         $loanCalculationObject = $loanPreparationFacade->prepareLoanObject($loanDto);
-        $loanAmortizationSchedule = $loanAmortizationScheduleGeneratorFacade->generate($loanCalculationObject);
 
         $cacheToken = $loanCalculationObject->hash();
 
         // Cache both for 1 hour
-        Cache::put($cacheToken, new LoanCachedData($loanCalculationObject, $loanAmortizationSchedule, $loanDto), now()->addMinutes(60));
+        Cache::put($cacheToken, new LoanCachedData($loanCalculationObject, $loanDto), now()->addMinutes(60));
 
         return ResponseService::data(collect([
             'loanToken' => $cacheToken,
             'loanData' => $loanCalculationObject->toArray(),
-            'loanAmortizationSchedule' => $loanAmortizationSchedule->toArray()
+            'loanAmortizationSchedule' => $loanAmortizationScheduleGeneratorFacade->generate($loanCalculationObject, true)
         ]), $loanDto);
     }
 }

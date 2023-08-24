@@ -4,7 +4,7 @@ namespace App\Services\Loan;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-class LoanAmortizationScheduleObject implements Arrayable
+class LoanAmortizationScheduleObject implements Arrayable, \Countable
 {
 
     /**
@@ -17,5 +17,10 @@ class LoanAmortizationScheduleObject implements Arrayable
     public function toArray(): array
     {
         return $this->paymentsByMonth;
+    }
+
+    public function count(): int
+    {
+        return count($this->paymentsByMonth);
     }
 }

@@ -10,4 +10,8 @@ class Loan extends Model
         'loan_token',
         'loan_input',
     ];
+
+    public function loanAmortizationScheduleRows() {
+        return $this->hasMany(LoanAmortizationSchedule::class);
+    }
 }

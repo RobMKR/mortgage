@@ -7,5 +7,7 @@ use App\Services\Loan\LoanCalculationObject;
 
 interface ILoanAmortizationScheduleGeneratorFacade
 {
-    public function generate(LoanCalculationObject $loanCalculationObject): LoanAmortizationScheduleObject;
+    public function generate(LoanCalculationObject $loanCalculationObject, bool $includeExtraPayments): LoanAmortizationScheduleObject;
+
+    public function payPartial(LoanAmortizationScheduleObject $loanAmortizationScheduleObject, float $singlePayment): LoanAmortizationScheduleObject;
 }

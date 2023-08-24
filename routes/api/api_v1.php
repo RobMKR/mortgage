@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\LoanApproveController;
 use App\Http\Controllers\Api\V1\LoanPrepareController;
+use App\Http\Controllers\Api\V1\LoanSingleExtraPaymentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Router;
 /*
@@ -25,4 +26,5 @@ Route::get('test', function () {
 Route::group(['prefix' => 'loan'], function (Router $router) {
     $router->post('prepare', LoanPrepareController::class);
     $router->post('approve', LoanApproveController::class);
+    $router->post('extra-payment/{id}', LoanSingleExtraPaymentController::class);
 });

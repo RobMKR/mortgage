@@ -18,4 +18,9 @@ class LoanRepository
             'loan_input' => json_encode($loanDto->toArray()),
         ]);
     }
+
+    public function find($id)
+    {
+        return Loan::find($id);
+    }
 }
