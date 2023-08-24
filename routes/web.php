@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Web\LoansController;
+use App\Http\Controllers\Web\LoansViewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', LoansController::class);
+Route::get('/loans/{id}', LoansViewController::class);
