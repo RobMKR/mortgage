@@ -22,7 +22,7 @@ class LoanAmortizationScheduleObjectBuilder
     {
         $paymentsByMonth = [];
 
-        $balance = $this->loanCalculationObject->getMonthlyPayment() * $this->loanCalculationObject->getTotalNumberOfMonths();
+        $balance = $this->loanCalculationObject->getTotalAmount();
 
         $periods = $this->loanCalculationObject->getTotalNumberOfMonths();
 
@@ -35,7 +35,7 @@ class LoanAmortizationScheduleObjectBuilder
             $fixedPayment = $this->loanCalculationObject->getMonthlyFixedExtraPayment();
 
             $startingBalance = $balance;
-            $balance -= $this->loanCalculationObject->getMonthlyPayment();
+            $balance -= $monthlyPrincipalAmount;
 
             if ($includeExtraPayments) {
 

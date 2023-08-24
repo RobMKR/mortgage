@@ -20,5 +20,6 @@ class LoanAmortizationExtraRepaymentSchedule extends Model
         'extra_repayment_made',
         'ending_balance',
         'remaining_loan_term',
+        'effective_interest_rate',
     ];
 }
